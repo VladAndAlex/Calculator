@@ -4,6 +4,9 @@
 #include <QToolButton>
 #include <QDebug>
 #include <QtMath>
+#include <QRadioButton>
+//#include <QButtonGroup>
+#include <QGroupBox>
 
 #include <mybutton.h>
 
@@ -68,7 +71,7 @@ Calculator::Calculator() {
     }
 
     mainLayout->addWidget(m_digitButtons[0], 7, 0, 1, 2);
-    mainLayout->addWidget(pointButton,      7, 2);
+    mainLayout->addWidget(pointButton, 7, 2);
     //mainLayout->addWidget(changeSignButton, 7, 3);
 
     mainLayout->addWidget(divisionButton, 4, 3);
@@ -76,14 +79,32 @@ Calculator::Calculator() {
     mainLayout->addWidget(minusButton,    6, 3);
     mainLayout->addWidget(plusButton,     7, 3);
 
-    mainLayout->addWidget(sqrtButton, 4, 4);
+    mainLayout->addWidget(sqrtButton,       4, 4);
     //mainLayout->addWidget(powerButton, 5, 4);
     mainLayout->addWidget(reciprocalButton, 5, 4);
-    mainLayout->addWidget(equalButton, 6, 4, 2, 1);
+    mainLayout->addWidget(equalButton,      6, 4, 2, 1);
+
+    //радиокнопки
+    QRadioButton *standardModeButton = new QRadioButton(tr("Standard"));
+    QRadioButton *engineeringModeButton = new QRadioButton(tr("Engineering"));
+    QGroupBox *modeGroupBox = new QGroupBox();
+
+    QVBoxLayout *vBoxLayout = new QVBoxLayout;
+    vBoxLayout->addWidget(standardModeButton);
+    vBoxLayout->addWidget(engineeringModeButton);
+    modeGroupBox->setLayout(vBoxLayout);
+    standardModeButton->setChecked(true);
+
+    mainLayout->addWidget(modeGroupBox, 3, 0, 1, 3);
+
+    connect(standardModeButton, &QRadioButton::toggled, this, &Calculator::setStandardMode);
+    connect(engineeringModeButton, &QRadioButton::toggled, this, &Calculator::setEngineeringMode);
+
 
     setLayout(mainLayout);
 
     setWindowTitle("Calculator");
+
 }
 
 MyButton *Calculator::createButton(const QString &text, const char *member)
@@ -190,6 +211,9 @@ void Calculator::abortOperation() {
     m_display_up->setText("***");
     m_display_down->setText("***");
 }
+
+void Calculator::setStandardMode() {}
+void Calculator::setEngineeringMode() {}
 
 bool Calculator::calculate(double operand, const QString &operation)
 {
