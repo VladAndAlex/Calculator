@@ -23,6 +23,9 @@ private slots:
     void clearALL();
     void clear();
 
+    void setStandardMode();
+    void setEngineeringMode();
+
 private:
     MyButton* createButton(const QString& text, const char* member);
     void abortOperation();
