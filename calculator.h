@@ -1,6 +1,7 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
+#include <QApplication>
 #include <QWidget>
 #include <QLineEdit>
 #include <QLabel>
@@ -29,10 +30,6 @@ private slots:
     void setStandardMode(bool checked);
 
 private:
-    // QWidget* stdWidget;
-    // QGridLayout* stdLayout;
-    // QWidget* engWidget;
-    // QGridLayout* engLayout;
 
     QWidget* mainWidget;
     QGridLayout* mainLayout;
@@ -77,6 +74,7 @@ private:
     void abortOperation();
     bool calculate(double operand, const QString& operation);
 
+
     QString m_pending_operation;
 
     QLineEdit* m_display_up;
@@ -99,6 +97,104 @@ private:
     QString m_power_y = "x^y";
     QString m_power_reverse_y = "x^(1/y)";
     QString m_log = "log";
+
+
+    //темная и светлая темы в виде SCC
+    QString darkTheme = R"(
+        QWidget {
+            background-color: #2D2D30;
+            color: #CCCCCC;
+        }
+        QLineEdit {
+            background-color: #333;
+            color: #DDD;
+            border: 1px solid #555;
+        }
+        QPushButton {
+            background-color: #555;
+            border: 1px solid #666;
+            color: white;
+        }
+        QPushButton:hover {
+            background-color: #666;
+        }
+        QPushButton:pressed {
+            background-color: #777;
+        }
+
+        MyButton {
+            background-color: #555;
+            border: 1px solid #666;
+            color: white;
+        }
+        MyButton:hover {
+            background-color: #666;
+        }
+        MyButton:pressed {
+            background-color: #777;
+        }
+        QRadioButton {
+            color: #DDD;
+        }
+        QGroupBox {
+            border: none;
+            margin-top: 1ex;
+        }
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 10px;
+            padding: 0 3px 0 3px;
+            color: #EEE;
+        }
+    )";
+
+    QString lightTheme = R"(
+        QWidget {
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+        QLineEdit {
+            background-color: #F0F0F0;
+            color: #000000;
+            border: 1px solid #B0B0B0;
+        }
+        QPushButton {
+            background-color: #E0E0E0;
+            border: 1px solid #C0C0C0;
+            color: #000000;
+        }
+        QPushButton:hover {
+            background-color: #D0D0D0;
+        }
+        QPushButton:pressed {
+            background-color: #C0C0C0;
+        }
+        MyButton {
+            background-color: #E0E0E0;
+            border: 1px solid #C0C0C0;
+            color: #000000;
+        }
+        MyButton:hover {
+            background-color: #D0D0D0;
+        }
+        MyButton:pressed {
+            background-color: #C0C0C0;
+        }
+        QRadioButton {
+            color: #000000;
+        }
+        QGroupBox {
+            border: none;
+            margin-top: 1ex;
+        }
+        QGroupBox::title {
+            subcontrol-origin: margin;
+            left: 10px;
+            padding: 0 3px 0 3px;
+            color: #000000;
+        }
+    )";
+
 
 };
 

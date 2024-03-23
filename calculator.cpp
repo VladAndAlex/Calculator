@@ -3,7 +3,7 @@
 #include <QToolButton>
 #include <QDebug>
 #include <QtMath>
-
+#include <QPushButton>
 #include <mybutton.h>
 
 
@@ -114,7 +114,8 @@ Calculator::Calculator() {
     mainLayout->addWidget(piButton, 7, 1);
     mainLayout->addWidget(cuberootButton, 7, 2);
     mainLayout->addWidget(yrootButton, 7, 3);
-    ///////////
+
+    //делаем дополнительные кнопки невидимыми
     sinhButton->setVisible(false);
     sinButton->setVisible(false);
     expButton->setVisible(false);
@@ -131,8 +132,7 @@ Calculator::Calculator() {
     piButton->setVisible(false);
     cuberootButton->setVisible(false);
     yrootButton->setVisible(false);
-/////////////
-///
+
     //радиокнопки
     standardModeButton = new QRadioButton(tr("Standard"));
     QRadioButton *engineeringModeButton = new QRadioButton(tr("Engineering"));
@@ -142,11 +142,31 @@ Calculator::Calculator() {
     vBoxLayout->addWidget(standardModeButton);
     vBoxLayout->addWidget(engineeringModeButton);
     modeGroupBox->setLayout(vBoxLayout);
+    modeGroupBox->setFlat(true);
     standardModeButton->setChecked(true);
+
+    connect(standardModeButton, &QRadioButton::toggled, this, &Calculator::setStandardMode);
 
     mainLayout->addWidget(modeGroupBox, 3, 0, 1, 7);
 
-    connect(standardModeButton, &QRadioButton::toggled, this, &Calculator::setStandardMode);
+
+    //кнопка смены режима
+    QPushButton* themeButton = new QPushButton("light", this);
+    qApp->setStyleSheet(lightTheme);
+    mainLayout->addWidget(themeButton, 3, 6, 1, 1);
+
+    // Подключение сигнала нажатия кнопки к слоту
+    connect(themeButton, &QPushButton::clicked, this, [this, themeButton](){
+        if(themeButton->text() == "light") {
+            themeButton->setText("dark");
+            qApp->setStyleSheet(darkTheme); // предполагая, что darkTheme - это переменная, доступная в этом контексте
+        }
+        else {
+            themeButton->setText("light");
+            qApp->setStyleSheet(lightTheme);
+        }
+    });
+
 
     setWindowTitle("Standard Calculator");
 
@@ -351,10 +371,11 @@ bool Calculator::calculate(double operand, const QString &operation)
     else if (operation == m_power_reverse_y)
          tmp_total = std::pow(tmp_total, 1.0/operand);
 
-    else if (operation == m_log)
+    else if (operation == m_log) {
         if (operand <= 0 or tmp_total <= 0)
             return false;
         tmp_total = std::log(tmp_total) / std::log(operand);
+    }
 
     m_display_up->setText(QString::number(tmp_total));
     return true;
